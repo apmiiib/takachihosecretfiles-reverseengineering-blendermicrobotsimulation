@@ -62,7 +62,7 @@ class AbstractMicrobotOriginArmTip:
 
         for i, y in enumerate(microbotPool):
             dist = y.getArmTipDist(p)
-            if (dist<closestdist):
+            if (dist<closestDist):
                 closestBot = y
                 closestIndex = i
                 closestDist = dist
