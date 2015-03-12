@@ -1,6 +1,6 @@
 # Takachiho Secret Files - Reverse Engineering - Microbot Simulation for Blender
 
-[ Hiro Takachiho : Journal ] During my investigation of the space-time dimensional disturbances, and my subsequent arrival on the dimension responsible, I have discovered my parallel counterpart in the city near the place where some portal experimentation was carried out that caused the disturbances. In this apparent mix of America's San Francisco and my homeland's Tokyo and Shibuya, I have found one "Hiro Hamada", who forms part of his own Big Hero 6.
+[ Takachiho Hiro : Journal ] During my investigation of the space-time dimensional disturbances, and my subsequent arrival on the dimension responsible, I have discovered my parallel counterpart in the city near the place where some portal experimentation was carried out that caused the disturbances. In this apparent mix of America's San Francisco and my homeland's Tokyo and Shibuya, I have found one "Hiro Hamada", who forms part of his own Big Hero 6.
 
 I came across one of his very interesting inventions: the Microbot. From all footage I've discovered, I learned that he showcased his invention in a university exhibit in their instiute of technology, then was subsequently stolen by one of the professors in that institution, in a bid for revenge over the then-apparent loss of his daughter to the aforementioned portal experimentation. Looking at their operation, I am intrigued in the applicability and the potential utility of these Microbots.
 
