@@ -1,3 +1,6 @@
+Everything here is in progress. I doubt there will be anything worth cloning anytime soon.
+If I do manage to build something remotely functioning, I will remove this notice.
+
 # Takachiho Secret Files - Reverse Engineering - Microbot Simulation for Blender
 
 [ Takachiho Hiro : Journal ] During my investigation of the space-time dimensional disturbances, and my subsequent arrival on the dimension responsible, I have discovered my parallel counterpart in the city near the place where some portal experimentation was carried out that caused the disturbances. In this apparent mix of America's San Francisco and my homeland's Tokyo and Shibuya, I have found one "Hiro Hamada", who forms part of his own Big Hero 6.
