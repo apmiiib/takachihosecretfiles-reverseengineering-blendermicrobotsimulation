@@ -51,6 +51,11 @@ class Point:
         self.z += p2.z
         return self
         
+    def add(self, p2):
+        """Also works like increase() but a new Point is generated instead of modifying this one.
+        """
+        return new Point().setPoint(self).increase(p2)
+        
     def decrease(self, p2):
         """Decrease modifies the Point's coordinates.
         """
@@ -58,6 +63,12 @@ class Point:
         self.y -= p2.y
         self.z -= p2.z
         return self
+        
+        
+    def subtract(self, p2):
+        """Also works like decrease() but a new Point is generated instead of modifying this one.
+        """
+        return new Point().setPoint(self).decrease(p2)
         
     def getDot(self, p2):
         return self.x*p2.x+self.y*p2.y+self.z*p2.z
