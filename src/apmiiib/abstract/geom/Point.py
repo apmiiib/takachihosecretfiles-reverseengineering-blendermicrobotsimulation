@@ -88,3 +88,8 @@ class Point:
     def getCross(self, p2):
         return new Point(self.y*p2.z-self.z*p2.y, self.z*p2.x-self.x*p2.z, self.x*p2.y-self.y*p2.x)
     
+    def getMagnitude(self):
+        return sqrt(self.x*self.x+self.y*self.y+self.z*self.z)
+        
+    def getMagnitude2(self):
+        return self.x*self.x+self.y*self.y+self.z*self.z
