@@ -64,7 +64,19 @@ class Point:
         self.z -= p2.z
         return self
         
-        
+    def scale(self, n, o=n, p=n):
+        """Multiplies the coordinate values.
+        """
+        self.x *= n
+        self.y *= o
+        self.z *= p
+        return self
+    
+    def multiply(self, n, o=n, p=n):
+        """Also works like scale() but a new Point is generated instead of modifying this one.
+        """
+        return new Point().setPoint(self).scale(n, o, p)
+    
     def subtract(self, p2):
         """Also works like decrease() but a new Point is generated instead of modifying this one.
         """
@@ -74,4 +86,5 @@ class Point:
         return self.x*p2.x+self.y*p2.y+self.z*p2.z
         
     def getCross(self, p2):
-        
+        return new Point(self.y*p2.z-self.z*p2.y, self.z*p2.x-self.x*p2.z, self.x*p2.y-self.y*p2.x)
+    
