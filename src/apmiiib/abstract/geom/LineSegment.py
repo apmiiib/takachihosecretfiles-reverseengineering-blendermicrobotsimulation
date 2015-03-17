@@ -36,7 +36,10 @@ class LineSegment:
         #   and n is the unit vector to represent the direction of the line.
         # Distance is || (a-p) - ((a-p).n) x n ||
         #   where p is our point of interest.
-        a_p = 
+        a_p = self.p0.subtract(p)
+        a_pn = a_p.getDot(self.pu)
+        a_pnxn = self.pu.multiply(a_pn)
+        dist = a_p.subtract(a_pnxn).getMagnitude()
         
         # get point to the line (extending infinitely.)
         # get distance of that point to the endpoints.
