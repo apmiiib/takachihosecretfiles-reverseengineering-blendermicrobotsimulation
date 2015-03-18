@@ -56,12 +56,12 @@ class LineSegment:
         # so get the endpoint which is closer to it.
         # if not, then return that point.
         
-        output = None
+        output = new Point()
         if (dist0<0):
-            output = new Point().setPoint(self.p0)
+            output.setPoint(self.p0)
         elif (dist0>self.length):
-            output = new Point().setPoint(self.p1)
+            output.setPoint(self.p1)
         else:
-            output = new Point().setPoint(self.p0).increase(self.pu.multiply(dist0))
+            output.setPoint(self.p0).increase(self.pu.multiply(dist0))
         
         return output
