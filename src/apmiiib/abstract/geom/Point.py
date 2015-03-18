@@ -24,6 +24,12 @@ class Point:
         y = self.y-p2.y
         z = self.z-p2.z
         return sqrt(x*x+y*y+z*z)
+        
+    def getDist2(self, p2):
+        x = self.x-p2.x
+        y = self.y-p2.y
+        z = self.z-p2.z
+        return x*x+y*y+z*z
 
     def getUnitVectorTo(self, p2):
         dist = self.getDist(p2)
