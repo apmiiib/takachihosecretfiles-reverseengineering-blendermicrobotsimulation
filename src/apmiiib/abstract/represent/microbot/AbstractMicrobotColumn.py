@@ -1,4 +1,4 @@
-import abstract.represent.LineSegment
+import abstract.geom.LineSegment
 
 class AbstractMicrobotColumn(LineSegment):
 
@@ -12,8 +12,5 @@ class AbstractMicrobotColumn(LineSegment):
 
 
     def pull(self, microbotArray):
-
         """Pulls the closest microbot from an array if it doesn't hold one.
         """
-
-        self.length = self.p0.getDist(self.p1)
