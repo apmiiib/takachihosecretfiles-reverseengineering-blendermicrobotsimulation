@@ -1,5 +1,10 @@
 from apmiiib.abstract.geom.Point import Point
+from apmiiib.abstract.represent.microbot.AbstractMicrobotLineup import AbstractMicrobotLineup
+from apmiiib.abstract.represent.microbot.MicrobotSpikeParametrics import MicrobotSpikeParametrics
+
 from math import pi, floor, pow
+
+pi2 = pi*2
 
 class AbstractMicrobotBasicSpike:
 	"""This class builds a construct of Microbots that form a spike.
@@ -14,16 +19,30 @@ class AbstractMicrobotBasicSpike:
 		
 		return r*self.radiusHeightRatio+z
 		
+	def defaultFc(self, o):
+		return floor(pi2*o)
 	
-	def __init__(self, basePoint, spikeDirection, radiusHeightRatio, microbotSpan, microbotBreadth, spikeShape=None):
+	def defaultFr(self, o, c):
+		return o
+		
+	def defaultFt(self, o, c):
+		return pi2*c/floor(pi2*o)
+	
+	def __init__(self, radiusHeightRatio, microbotSpan, microbotBreadth, basePoint=Point.ZERO, spikeDirection=Point.Z, spikeShape=None):
 		self.basePoint = basePoint
 		self.spikeDirection = spikeDirection.getDirection()
 		self.radiusHeightRatio = radiusHeightRatio
+		self.rHR = self.radiusHeightRatio
 		self.microbotSpan = microbotSpan
 		self.microbotBreadth = microbotBreadth
 		self.spikeShape = spikeShape
 		if (spikeShape == None):
 			self.spikeShape = AbstractMicrobotBasicSpike.defaultSpikeShape
+		self.abstractionsUsed = None
+		
+		self.fc = AbstractMicrobotBasicSpike.defaultFc
+		self.fr = AbstractMicrobotBasicSpike.defaultFr
+		self.ft = AbstractMicrobotBasicSpike.defaultFt
 		
 	
 	def heuristic(self, freeNodePoint, angle):
@@ -125,6 +144,8 @@ class AbstractMicrobotBasicSpike:
 		Returns a list of AbstractMicrobotOriginArmTip that was used by this method.
 		"""
 		
+		self.spikeDirection.normalize()
+		
 		# Process:
 		## Imagine a disk whose normal vector is the spikeDirection.
 		## Fill this disk with circles through which a microbotThread will go through.
@@ -147,7 +168,6 @@ class AbstractMicrobotBasicSpike:
 		microbotThreadCapacityMax = 0
 		microbotBreadth = self.microbotBreadth
 		microbotThreadRadians = 0
-		pi2 = pi*2
 		while (len(microbotThreads)<microbotThreadCount):
 			if (microbotThreadCapacity == 0):
 				microbotThreadOrbit += 1
@@ -155,17 +175,18 @@ class AbstractMicrobotBasicSpike:
 				# Compute the largest number of circles that can fit at that point.
 				# Get the circumference at that orbit, then divide by the diamter of a microbot.
 				# microbotThreadRadians = 2*pi*microbotThreadOrbit #*microbotBreadth/microbotBreadth
-				microbotThreadCapacityMax = floor(pi2*microbotThreadOrbit)
+				microbotThreadCapacityMax = self.fc(self, microbotThreadOrbit)
 				microbotThreadCapacity = microbotThreadCapacityMax
 			
+			microbotThreadCapacity -= 1
+			
 			# rotate the diskSweepVector
-			microbotThreadOrbitAngle = diskSweepVector.rotate(self.spikeDirection, pi2*microbotThreadCapacity/microbotThreadCapacityMax)
+			microbotThreadOrbitAngle = diskSweepVector.rotate(self.spikeDirection, self.ft(self, microbotThreadOrbit, microbotThreadCapacity))
 			
 			# get the point at this angle.
-			threadPoint = self.basePoint.add(microbotThreadOrbitAngle.multiply(microbotBreadth*microbotThreadOrbit))
+			threadPoint = self.basePoint.add(microbotThreadOrbitAngle.multiply(microbotBreadth*self.fr(self, microbotThreadOrbit, microbotThreadCapacity)))
 			microbotThreads.append(AbstractMicrobotBasicSpike.BotThread(self, threadPoint, microbotThreadOrbitAngle))
 			
-			microbotThreadCapacity -= 1
 			
 		## Part 1.3: Find the point where a line through each circle's center and normal intersects with the ground.
 		
@@ -205,6 +226,63 @@ class AbstractMicrobotBasicSpike:
 			
 		# By this point, all the Microbots used have been posed.
 		# Return a list of those Microbots.
+		
+		self.abstractionsUsed = AbstractMicrobotLineup(microbotAccounting)
+		self.microbotThreadCount = microbotThreadCount
+		
 		return microbotAccounting
+	
+	def setThreadParametrics(self, fc=None, fr=None, ft=None):
+		""" Accepts functions that determine how the threads will be set up.
+		
+		fc - accepts an orbit index, returns the number of threads that can fit that orbit. (a circle is floor(pi*2*x), a square is 4+4*x)
+		fr - accepts a thread count and orbit index, returns distance from center. one unit is one Microbot diameter.
+		ft - accepts a thread count and orbit index, returns angle of rotation.
+		
+		"""
+		
+		if (isinstance(fc, MicrobotSpikeParametrics)):
+			ft = fc.ft
+			fr = fc.fr
+			fc = fc.fc
+		
+		if (fc != None):
+			self.fc = fc
+		
+		if (fr != None):
+			self.fr = fr
+		
+		if (ft != None):
+			self.ft = ft
+		
+		return self
+		
+	
+	def reshape(self, shape=None, position=None, direction=None, threads=None, lineup=None, limit=None):
+		if (shape != None):
+			self.spikeShape = shape
+			
+		if (direction != None):
+			self.spikeDirection = direction
+			
+		if (threads == None):
+			threads = self.microbotThreadCount
+			
+		if (lineup == None):
+			lineup = self.abstractionsUsed;
+			
+		if (limit == None):
+			limit = len(lineup)
+		
+		if (position != None):
+			self.basePoint = position
+			
+		abstractions = self.calculate(lineup, limit, threads)
+		for i in abstractions:
+			if (i.being != None):
+				i.being.update()
+		
+		return abstractions
+
 		
 		

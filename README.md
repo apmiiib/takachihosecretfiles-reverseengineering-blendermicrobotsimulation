@@ -3,27 +3,15 @@ I was able to generate a spike with the code here, but it requires that a lot of
 - There must be an armature named "Microbot" and a child mesh "Microbot-Base". There also must be a copy of each with ".000" at the end. However, they may all be hidden and not rendered. These are the Source Copies.
 - The armature must have a root bone "Arm_L-Center" which has a child bone "Arm_R". The first's tail is the second's head, and are found at the very center of the armature. Both bones have equal length and have a 0-degree roll.
 - The armature (and therefore the mesh) must originally be pointing at the Y+ direction; the left arm's tip must be at the armature's origin, and the left-to-right-arm direction is the Y+ direction.
-- The Source Copies must not be posed; they must have 0-degree rotations in all axes.
-- KNOWN BUG: Recalculating a spike requires that the entire Blender software be restarted; the reshapeSpike function -- or rather, the underlying code that poses the armatures, which is used by this function -- is bugged. The armature pose code only works the first time it is used on an object.
 - You must run (by importing) apmiiib/demo/microbotsimulation/SpikeDemonstration.py to generate a spike; you have to edit the file itself to set the parameters for creating that spike.
 - The spike grows from the ground at Z=0. Therefore, the spike's angle cannot be parallel to the ground.
 - (Probably more, but I can't think of another one anymore as of writing.)
 
-Run the script on the Microbot Base demo. The parameters are as follows (edited in the script file):
+Some new feature:
 
-	microbotLimit - the number of microbots to use.
-	microbotThreads - max number of lines of microbots that a spike will be made of.
-	radiusHeightRatio - defines the radius of the spike relative to its height. meaningless on its own if you define your own spike shape function
-	spikeDirection - the direction vector that the spike will point at. This does NOT represent the point in space that the spike will point at.
-	spikeBasePoint - where the spike's center is guaranteed to pass through. The spike begins from the ground at Z=0, then grows through this point, at an angle specified to spikeDirection.
-	microbotSpan  - the length of the microbot.
-	microbotBreadth - the diameter of the microbot.
-	
-	spikeShape - a function that you can redefine; it takes three parameters: polar R, polar angle T, and Z. its return value defines how the spike will be shaped.
-		Example: a straight conical spike of microbots is defined by
-			y = R+cT
-		where c is how sharp the cone is (the smaller, the sharper)
-	
+- You can now use the spike's "reshape" method to change the orientation of a spike, or recalculate its features. This spares you the trouble of reloading and regenerating the entire thing if you need to modify the spike a bit.
+
+Run the script on the Blender Python console while you have the Microbot demo file open. See the file to find out (a bit -- haven't elaborated yet; hope you're okay with snooping around with the code for now) how to operate.
 
 # Takachiho Secret Files - Reverse Engineering - Microbot Simulation for Blender
 

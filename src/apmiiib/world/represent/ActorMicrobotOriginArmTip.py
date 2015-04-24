@@ -20,6 +20,8 @@ class ActorMicrobotOriginArmTip:
 		self.bone2 = armature.pose.bones["Arm_R"]
 		self.bone1mat = None
 		
+		self.update()
+		
 	def update(self):
 		scale = self.data.span/10.55;
 		self.armature.scale = Vector((scale, scale, scale));
@@ -33,17 +35,22 @@ class ActorMicrobotOriginArmTip:
 		
 		# Commit bone1.
 		self.mat1UV = m1
-		self.bone1.matrix = m1
+		m1p = self.bone1.matrix.copy()
+		self.bone1.matrix = m1.copy()
 		
 		# Compute the matrix for bone2.
 		# Get original-basis vector for the next bone.
 		m2g = self.data.getUnitVectorCT().toBoneRotationMatrix4()
 		
 		# Use this to cancel off rotation by bone1
-		m1t = m1.copy();
+		m1t = m1.copy()
 		m1t.transpose()
+		m1p[0][3] = 0
+		m1p[1][3] = 0
+		m1p[2][3] = 0
+		# m1p.transpose()
 		
-		m2 = Point.matrixMultiply4x4(m2g, m1t)
+		m2 = Point.matrixMultiply4x4(Point.matrixMultiply4x4(m2g, m1t), m1p)
 		
 		# Set the position.
 		m2[0][3] = m1v.x*5.275
